@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head lang="en">
+    <meta charset="utf-8">
+    <title>Akka Admin</title>
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="js/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script type="text/javascript" src="js/akka-admin.js"></script>
+    <link rel="stylesheet" href="css/app.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div ng-app="akkaApp" ng-controller="AkkaCtrl">
+    <h4 class="bg-primary">AKKA Admin</h4>
+    <div class="container-fluid">
+        <div id="content" class="center-block  col-md-8 bg-warning" style="border-radius:25px;border-color: lightgray">
+            <br>
+            <dl class="dl-horizontal">
+                <dt>Current Node:</dt>
+                <dd>{{pageData.data.node}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Cluster Members:</dt>
+                <dd>
+                    <ul ng-repeat=" members in pageData.data.clusterMembers">
+                        <li>{{members}}</li>
+                    </ul>
+                </dd>
+            </dl>
+            <p align="center">
+                <button type="submit" class="btn btn-primary">Start Actor System</button>
+                <button type="submit" class="btn btn-primary">Stop Actor System</button>
+                <button type="submit" class="btn btn-primary">Refresh Data</button>
+            </p>
+        </div>
+        <akka-service   type="'fix'" services="pageData.data.clusterServices"  members="pageData.data.clusterMembers"></akka-service>
+        <akka-service   type="'mq'" services="pageData.data.clusterServices" members="pageData.data.clusterMembers"></akka-service>
+    </div>
+    <script type="text/ng-template" id="service-details.html">
+        <div ng-show="showPanel" class='center-block col-md-8 bg-info' style="border:1px solid;border-radius:25px;border-color: lightgray" ng-init="serviceLocationModel = akkaServiceInfo[0].type+'Service' ">
+            <p class='text-center'>{{(akkaServiceInfo| filter: {type: akkaServiceType})[0].type | uppercase}} details</p>
+			<!--<p class='text-center'>{{(akkaServiceInfo| filter: {type: akkaServiceType})[0].type | uppercase}} details</p>-->
+            <dl class='dl-horizontal'>
+                <dt>Service Node:</dt>
+                <dd>{{(akkaServiceInfo| filter: {type: akkaServiceType})[0].clusterMember }}
+                    <button type='submit' class='btn btn-primary btn-xs' ng-click="stopService((akkaServiceInfo| filter: {type: akkaServiceType})[0].type)">Stop Service</button>
+                </dd>
+            </dl>
+            <dl class='dl-horizontal' ng-show="showNodeOptions">
+                <dt>Start service on:</dt>
+                <dd><select
+                        ng-options="member for member in akkaServiceMembers | filter: '!{{(akkaServiceInfo| filter: {type: akkaServiceType})[0].clusterMember }}'"
+                        ng-model="serviceLocationModel"></select>
+                    <button type='submit' class='btn btn-primary btn-xs' ng-click="startService((akkaServiceInfo| filter: {type: akkaServiceType})[0].type)">Start Service
+                    </button>
+                </dd>
+            </dl>
+        </div>
+    </script>
+</div>
+
+</body>
+</html>

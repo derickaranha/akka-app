@@ -1,0 +1,15 @@
+<div class='center-block col-md-8 bg-info' style="border:1px solid;border-radius:25px;border-color: lightgray" ng-init="serviceLocationModel = akkaServiceInfo[0].type+'Service' ">
+    <p class='text-center'>{{akkaServiceInfo[0].type | uppercase}} details</p>
+    <dl class='dl-horizontal'>
+        <dt>Service Node:</dt>
+        <dd>{{akkaServiceInfo[0].clusterMember}}
+        <button type='submit' class='btn btn-primary btn-xs' ng-click="stopService()">Stop Service</button>
+        </dd>
+    </dl>
+    <dl class='dl-horizontal'>
+        <dt>Start service on:</dt>
+        <dd><select ng-options="member for member in akkaServiceMembers | filter: '!{{akkaServiceInfo[0].clusterMember}}'" ng-model="serviceLocationModel"></select>
+            <button type='submit' class='btn btn-primary btn-xs' ng-click="startService()">Start Service</button>
+        </dd>
+    </dl>
+</div>

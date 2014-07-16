@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head lang="en">
+    <meta charset="utf-8">
+    <title>Akka Admin</title>
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="js/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script type="text/javascript" src="js/akka-admin.js"></script>
+    <link rel="stylesheet" href="css/app.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div ng-app="akkaApp" ng-controller="AkkaAdminCtrl">
+    <h4 class="bg-primary">AKKA Admin</h4>
+    <div class="container-fluid">
+        <div id="content" class="center-block  col-md-8 bg-warning" style="border-radius:25px;border-color: lightgray">
+            <br>
+            <dl class="dl-horizontal">
+                <dt>Current Node:</dt>
+                <dd>{{pageData.data.node}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Cluster Members:</dt>
+                <dd>
+                    <ul ng-repeat=" members in pageData.data.clusterMembers">
+                        <li>{{members}}</li>
+                    </ul>
+                </dd>
+            </dl>
+            <p align="center">
+                <button type="submit" class="btn btn-primary btn-sm" ng-click="startActorSystem()">Start Actor System</button>
+                <button type="submit" class="btn btn-primary btn-sm" ng-click="stopActorSystem()">Stop Actor System</button>
+                <button type="submit" class="btn btn-primary btn-sm"  ng-click="refreshData()">Refresh Data</button>
+            </p>
+        </div>
+		<akka-service   type="'fix'" services="pageData.data.clusterServices"  members="pageData.data.clusterMembers"></akka-service>
+        <akka-service   type="'mq'" services="pageData.data.clusterServices" members="pageData.data.clusterMembers"></akka-service>
+		<br><br>
+		<div  ng-model="userMessageText" >{{userMessageText}}</div>
+    </div>
+	<script type="text/ng-template" id="service-details.html">
+        <div class='center-block col-md-8 bg-info' style="border:1px solid;border-radius:25px;border-color: lightgray" ng-init="hideListeners=true;serviceInfo = (akkaServiceInfo| filter: {type: akkaServiceType})[0] ">
+            <p class='text-center'>{{(akkaServiceInfo| filter: {type: akkaServiceType})[0].type | uppercase}} details</p>
+            <dl class='dl-horizontal' ng-show="showNodeOptions">
+                <dt>Start service on:</dt>
+                <dd>
+				<select ng-options="member for member in akkaServiceMembers |  exclude: serviceInfo.nodes " ng-model="toServiceNode"></select>
+                    <button type='submit' class='btn btn-primary btn-xs' ng-click="startService((akkaServiceInfo| filter: {type: akkaServiceType})[0].type)">Start Service</button>
+                    <!--<span class="glyphicon glyphicon-off"  alt="Start Service"  style="margin: 0 10px;cursor: pointer;" ng-click="startService((akkaServiceInfo| filter: {type: akkaServiceType})[0].type)"></span>-->
+                </dd>
+            </dl>
+             <dl class='dl-horizontal'>
+                <dt>Service Nodes:</dt>
+                <dd>
+				<ul ng-repeat="serviceNode in serviceInfo.nodes">
+                    <li>
+                        <div class="btn-group" dropdown is-open="status.isopen">
+                            <button type='submit' class='btn btn-primary btn-xs'>{{serviceNode.id}}</button>
+                            <span class="glyphicon glyphicon-list" alt="Listener details"  style=" margin: 0 10px;cursor: pointer;" ng-click="hideListeners = !hideListeners"></span>
+                            <span class="glyphicon glyphicon-off"  alt="Stop Service"  style=" cursor: pointer;" ng-click="stopService(serviceInfo.type, serviceNode.id)"></span>
+
+                        </div>
+                        <div collapse="hideListeners">
+                            <br>
+                            <div class="well well-lg">
+                                <ul class="list-inline">
+                                    <li ng-repeat="listener in serviceNode.listeners" style="padding: 2px;">
+                                        <button class='btn btn-success btn-xs'>{{listener}}</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </dl>
+            <!--{{serviceInfo.nodes}}-->
+        </div>
+    </script>
+</div>
+</body>
+</html>

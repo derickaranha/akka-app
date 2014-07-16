@@ -1,0 +1,17 @@
+{
+    "node": "12.0.0.1:2552",
+    "clusterMembers" : [
+           "12.0.0.1:2551",
+           "12.0.0.1:2552"
+    ],
+    "clusterServices": [
+        {
+              "type": "fix"
+              "clusterMember": "127.0.0.1:2552",
+        },
+        {
+              "type": "swift"
+              "clusterMember": "127.0.0.1:2551",
+        }
+    ]
+}

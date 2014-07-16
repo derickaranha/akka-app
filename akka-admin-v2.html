@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head lang="en">
+    <meta charset="utf-8">
+    <title>Akka Admin</title>
+    <!-- <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+  <script type="text/javascript" src="js/ui-bootstrap-tpls-0.1.0-SNAPSHOT.js"></script>
+  <script type="text/javascript" src="js/akka-admin.js"></script>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/app.css">-->
+    <!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js"></script>-->
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="js/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script type="text/javascript" src="js/akka-admin.js"></script>
+    <link rel="stylesheet" href="css/app.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body ng-app="akkaApp">
+<div ng-controller="AccordionDemoCtrl">
+    <h4 class="bg-primary">AKKA Admin</h4>
+
+    <div class="container-fluid">
+        <div class="rows">
+        <div id="menu" class="col-md-4 span2">
+            <accordion>
+                <accordion-group heading="System">
+                    <div>
+                        Node
+                    </div>
+                </accordion-group>
+                <accordion-group heading="Services" is-open="status.open">
+                    <div ng-repeat="service in pageData.data.clusterServices"
+                         ng-click="pageData.detailContentType = service">
+                        {{service.type}}
+                    </div>
+                </accordion-group>
+                <accordion-group heading="Logging">
+                    <div>
+                        Logback
+                    </div>
+                </accordion-group>
+            </accordion>
+        </div>
+        <div id="rightPane" class="span10">
+        <div id="content" class="center-block  col-md-8 bg-warning">
+           <br>
+            <dl class="dl-horizontal">
+                <dt>Current Node:</dt>
+                <dd>{{pageData.data.node}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Cluster Members:</dt>
+                <dd>
+                    <ul ng-repeat=" members in pageData.data.clusterMembers">
+                        <li>{{members}}</li>
+                    </ul>
+                </dd>
+            </dl>
+           <p align="center">
+                <button type="submit" class="btn btn-primary">Start</button>
+                <button type="submit" class="btn btn-primary">Stop</button>
+            </p>
+        </div>
+        <div class="animate-switch-container" ng-switch on="pageData.detailContentType.type">
+            <br><br>
+            <div id="fix-detail-content" class="center-block  col-md-8 bg-info animate-switch"  ng-switch-when="fix" >
+                <p class="text-center">FIX details</p>
+                <dl class="dl-horizontal">
+                    <dt>Service Node:</dt>
+                    <dd>{{pageData.detailContentType.clusterMember}}</dd>
+                </dl>
+                 <dl class="dl-horizontal">
+                    <dt>Start service on:</dt>
+                    <dd><select ng-options="member for member in pageData.data.clusterMembers | filter: '!{{pageData.detailContentType.clusterMember}}'"
+                        ng-model="fixServiceNode"></select></dd>
+                </dl>
+            </div>
+            <div id="swift-detail-content" class="center-block  col-md-8 bg-info animate-switch" ng-switch-when="swift" >
+                <p class="text-center">SWIFT details</p>
+                <dl class="dl-horizontal" >
+                    <dt>Service Node:</dt>
+                    <dd>{{pageData.detailContentType.clusterMember}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Start service on:</dt>
+                    <dd><select ng-options="member for member in pageData.data.clusterMembers  | filter: '!{{pageData.detailContentType.clusterMember}}'"
+                        ng-model="swiftServiceNode"></select>
+                    <button type="submit" class="btn btn-primary btn-sm">Start</button></dd>
+                </dl>
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

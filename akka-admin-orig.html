@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head lang="en">
+    <meta charset="utf-8">
+    <title>Akka Admin</title>
+    <!-- <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+  <script type="text/javascript" src="js/ui-bootstrap-tpls-0.1.0-SNAPSHOT.js"></script>
+  <script type="text/javascript" src="js/akka-admin.js"></script>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/app.css">-->
+    <!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js"></script>-->
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="js/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script type="text/javascript" src="js/akka-admin.js"></script>
+    <link rel="stylesheet" href="css/app.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body ng-app="akkaApp">
+<div class="container" ng-controller="AccordionDemoCtrl">
+    <div class="row">
+        <div class="span3 bs-docs-sidebar">
+            <accordion>
+                <accordion-group heading="System">
+                    <div>
+                        Node
+                    </div>
+                </accordion-group>
+                <accordion-group heading="Services" is-open="status.open">
+                    <div ng-repeat="service in pageData.data.clusterServices"
+                         ng-click="pageData.detailContentType = service.type">
+                        {{service.type}}
+                    </div>
+                </accordion-group>
+                <accordion-group heading="Logging">
+                    <div>
+                        Logback
+                    </div>
+                </accordion-group>
+            </accordion>
+        </div>
+        <div class="span9">
+            Content
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head lang="en">
+    <meta charset="utf-8">
+    <title>Car Test Admin</title>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+    <script type="text/javascript" src="js/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script type="text/javascript" src="js/test.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body ng-app="myApp">
+<div ng-controller="AccordionDemoCtrl">
+    <h4 class="bg-primary">Car Admin</h4>
+   <div class="container-fluid">
+        <div id="menu" class="col-md-4 span2">
+            <accordion>
+                <accordion-group heading="Car Models" is-open="status.open">
+                    <div ng-repeat="dealer in pageData.data.carDealers"
+                         ng-click="pageData.detailContentModel = dealer.model">
+                        {{dealer.model}}
+                    </div>
+                </accordion-group>
+                <accordion-group heading="SpeedTest">
+                    <div>
+                        Speed Test
+                    </div>
+                </accordion-group>
+            </accordion>
+        </div>
+        <div id="rightPane" class="span10">
+        <div class="animate-switch-container" ng-switch on="pageData.detailContentModel">
+            <div id="bmw-detail-content" class="center-block  col-md-8 bg-info" class="animate-switch" ng-switch-when="bmw" >
+                <p class="text-center">BMW details</p>
+                <dl class="dl-horizontal" ng-repeat="bmwCar in pageData.data.carDealers| filter: pageData.detailContentModel">
+                    <dt>Car location:</dt>
+                    <dd><!-- How do i get to display the location of the BMW model here i.e. montreal --></dd>
+                </dl>
+                 <dl class="dl-horizontal">
+                    <dt>Change location to:</dt>
+                     <!-- How do i exclude/filter the location already associated with the BMW car in the jsonData in the following select drop down -->
+                    <dd><select ng-options="location for location in pageData.data.locations" ng-model="theBmwCar"></select></dd>
+                </dl>
+            </div>
+            <div id="honda-detail-content" class="center-block  col-md-8 bg-info" class="animate-switch" ng-switch-when="honda" >
+                <p class="text-center">Honda details</p>
+                <dl class="dl-horizontal" ng-repeat="hondaCar in pageData.data.carDealers| filter: pageData.detailContentModel">
+                    <dt>Car location:</dt>
+                    <dd><!-- How do i get to display the location of the Honda model here i.e. new york --></dd>
+                </dl>
+                 <dl class="dl-horizontal">
+                    <dt>Change Location to:</dt>
+                     <!-- How do i exclude/filter the location already associated with the Honda car in the jsonData in the following select drop down -->
+                    <dd><select ng-options="location for location in pageData.data.locations" ng-model="theHondaCar"></select></dd>
+                </dl>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
